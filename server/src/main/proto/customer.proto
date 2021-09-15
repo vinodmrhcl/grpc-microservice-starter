@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hcl.demo.proto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "util/date.proto";
+
+// gRPC service providing CRUD methods for Customer
+service CustomerService {
+
+    rpc GetCustomer (google.protobuf.Int32Value) returns (CustomerProto);
+
+    rpc CreateCustomer (CustomerProto) returns (CustomerProto);
+
+}
+
+// proto buffer for Customer
+message CustomerProto {
+    
+    int32 cusId = 1;
+
+    string cusName = 2;
+    
+    string contactNo = 3;
+    
+    AddressProto address = 4;
+    
+    util.Date createDTM = 5;
+    
+    string createUserId = 6;
+    
+    util.Date lastUpdtDTM = 7;
+    
+    string lastUpdtUserId = 8;
+    
+}
+
+// proto buffer for Address
+message AddressProto {
+
+	int32 addressId = 1;
+
+	string streetAddress1 = 2;
+
+	string streetAddress2 = 3;
+
+	string city = 4;
+
+	string zipCode = 5;
+
+	string countryCd = 6;
+
+	string stateCd = 7;
+
+    util.Date createDTM = 8;
+    
+    string createUserId = 9;
+    
+    util.Date lastUpdtDTM = 10;
+    
+    string lastUpdtUserId = 11;
+
+}

@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hcl.demo.proto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "customer.proto";
+import "util/date.proto";
+
+// gRPC service providing CRUD methods for Account
+service AccountService {
+
+    rpc GetAccount (google.protobuf.Int32Value) returns (AccountProto);
+
+    rpc GetAllAccounts (google.protobuf.Empty) returns (stream AccountProto);
+
+    rpc CreateAccount (AccountProto) returns (AccountProto);
+
+    rpc UpdateAccount (AccountProto) returns (AccountProto);
+
+    rpc DeleteAccount (google.protobuf.Int32Value) returns (google.protobuf.Empty);
+}
+
+// proto buffer for Account
+message AccountProto {
+    
+    int32 accId = 1;
+
+    string accName = 2;
+    
+    string accBalance = 3;
+    
+    bool status = 4;
+    
+    repeated AccountFeatureProto accFeature = 5;
+    
+    CustomerProto customer = 6;
+    
+    util.Date createDTM = 7;
+    
+    string createUserId = 8;
+    
+    util.Date lastUpdtDTM = 9;
+    
+    string lastUpdtUserId = 10;
+    
+}
+
+// proto buffer for AccountFeature
+message AccountFeatureProto {
+
+	int32 accountFeatureId = 1;
+
+	string card = 2;
+
+	string cardtype = 3;
+
+	string cardlimit = 4;
+	
+    util.Date createDTM = 5;
+    
+    string createUserId = 6;
+    
+    util.Date lastUpdtDTM = 7;
+    
+    string lastUpdtUserId = 8;
+	
+}

@@ -1,0 +1,286 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: AccountManagement
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  "/accounts/{accId}":
+    get:
+      description: Get a single Account Details
+      operationId: GetAccount
+      parameters:
+        - name: accId
+          in: path
+          required: true
+          description: The Account No of the user to get
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"  
+  "/accounts":
+    post:
+      description: Account Creation Service
+      operationId: CreateAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+        description: account should be created
+        required: true
+      responses:
+        "200":
+          description: Account response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+    get:
+      description: Get all Accounts
+      operationId: GetallAccounts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"                
+    put:
+      description: Account Updation Service
+      operationId: UpdateAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+        description: account
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+    delete:
+      description: Account Deletion Service
+      operationId: DeleteAccount
+      parameters:
+        - name: accId
+          in: query
+          description: account id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account" 
+  "/customers/{cusId}":
+    get:
+      description: Get Customer Service
+      operationId: GetCustomer
+      parameters:
+        - name: cusId
+          in: path
+          required: true
+          description: The Customer No of the user to get
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /customers:
+    post:
+      description: Customer Creation Service
+      operationId: CreateCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+        description: new customer should be created
+        required: true
+      responses:
+        "200":
+          description: Account response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+servers:
+  - url: //localhost:5001/
+components:
+  schemas:
+    Account:
+      title: Account
+      type: object
+      properties:
+        accId:
+          type: integer
+          x-primary-key: true
+          format: int(10)
+        customer:
+          allOf:
+           - "$ref": "#/components/schemas/Customer"
+        accName:
+          type: string
+          format: varchar(200)
+        accBalance:
+          type: string
+          format: varchar(200)
+        accFeature:
+          type: array
+          items:
+            allOf:
+            - "$ref": "#/components/schemas/AccountFeature"
+        status:
+          type: boolean
+          format: boolean
+        createDTM:
+          type: string
+          format: date
+        createUserId:
+          type: string
+          format: varchar(50)
+        lastUpdtDTM:
+          type: string
+          format: date
+        lastUpdtUserId:
+          type: string
+          format: varchar(50)
+      required:
+        - accId
+        - cusId
+        - accName
+        - accBalance
+    Customer:
+      title: Customer
+      type: object
+      properties:
+        cusId:
+          type: integer
+          x-primary-key: true
+          format: int(10)
+        cusName:
+          type: string
+          format: varchar(200)
+        address:
+          allOf:
+           - "$ref": "#/components/schemas/Address"
+        contactNo:
+          type: string
+          format: varchar(50)
+        createDTM:
+          type: string
+          format: date
+        createUserId:
+          type: string
+          format: varchar(50)
+        lastUpdtDTM:
+          type: string
+          format: date
+        lastUpdtUserId:
+          type: string
+          format: varchar(50)
+      required:
+        - cusId
+        - cusName
+        - address
+    Address:
+        title: Address  
+        type: object
+        properties:
+          addressId:
+            type: integer
+            x-primary-key: 'true'
+            format: int(25)
+          streetAddress1:
+            type: string
+            format: varchar(50)
+          streetAddress2:
+            type: string
+            format: varchar(50)
+          city:
+            type: string
+            format: varchar(50)
+          zipCode:
+            type: string
+            format: varchar(50)
+          countryCd:
+            type: string
+            format: varchar(50)
+          stateCd:
+            type: string
+            format: varchar(50)
+          createDTM:
+            type: string
+            format: date
+          createUserId:
+            type: string
+            format: varchar(50)
+          lastUpdtDTM:
+            type: string
+            format: date
+          lastUpdtUserId:
+            type: string
+            format: varchar(50)
+        required:
+        - addressId
+        - city
+        - countryCd
+        - stateCd
+        - streetAddress1
+        - zipCode
+    AccountFeature:
+        type: object
+        title: AccountFeature
+        properties:
+          accountFeatureId:
+            type: integer
+            x-primary-key: 'true'
+            format: int(25)
+          account:
+            allOf:
+              - "$ref": "#/components/schemas/Account"
+          card:
+            type: string
+            format: varchar(50)              
+          cardtype:
+            type: string
+            format: varchar(50)
+          cardlimit:
+            type: string
+            format: varchar(50)
+          createDTM:
+            type: string
+            format: date
+          createUserId:
+            type: string
+            format: varchar(50)
+          lastUpdtDTM:
+            type: string
+            format: date
+          lastUpdtUserId:
+            type: string
+            format: varchar(50)
+        required:
+        - allowedClinicAppId
+        - cardtype
+        - cardlimit
